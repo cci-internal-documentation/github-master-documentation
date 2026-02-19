@@ -5,201 +5,71 @@ customer deployment configuration, CI/CD, Kubernetes-based projects, and
 technical documentation versioning.\
 **Status:** Initial (v1.0)
 
-# Table of Contents {#table-of-contents .TOC-Heading}
-
-[1) Why we purchased GitHub Enterprise
-[4](#why-we-purchased-github-enterprise)](#why-we-purchased-github-enterprise)
-
-[Business purpose [4](#business-purpose)](#business-purpose)
-
-[1. Product source code repositories
-[4](#_Toc222325993)](#_Toc222325993)
-
-[2. Customer environment configuration repositories
-[4](#_Toc222325994)](#_Toc222325994)
-
-[3. Kubernetes-based delivery programs + CD pipelines
-[4](#_Toc222325995)](#_Toc222325995)
-
-[4. Technical documentation version control
-[4](#_Toc222325996)](#_Toc222325996)
-
-[What GitHub Enterprise is (in simple terms)
-[5](#what-github-enterprise-is-in-simple-terms)](#what-github-enterprise-is-in-simple-terms)
-
-[2) Core concepts [6](#core-concepts)](#core-concepts)
-
-[2.1 Enterprise account (Cuculus India)
-[6](#enterprise-account-cuculus-india)](#enterprise-account-cuculus-india)
-
-[2.2 Organizations (project/customer containers)
-[6](#organizations-projectcustomer-containers)](#organizations-projectcustomer-containers)
-
-[2.3 Teams (role-based access groups)
-[6](#teams-role-based-access-groups)](#teams-role-based-access-groups)
-
-[2.4 Repositories ("repos")
-[6](#repositories-repos)](#repositories-repos)
-
-[2.5 Permissions and roles (how we control access)
-[7](#permissions-and-roles-how-we-control-access)](#permissions-and-roles-how-we-control-access)
-
-[3) Cuculus India initial license allocation (10 seats)
-[7](#cuculus-india-initial-license-allocation-10-seats)](#cuculus-india-initial-license-allocation-10-seats)
-
-[3.1 Initial users (as proposed)
-[7](#initial-users-as-proposed)](#initial-users-as-proposed)
-
-[System Engineering (5)
-[7](#system-engineering-5)](#system-engineering-5)
-
-[3.2 Recommended admin coverage (risk control)
-[8](#recommended-admin-coverage-risk-control)](#recommended-admin-coverage-risk-control)
-
-[4) Proposed structure for Cuculus India in GitHub Enterprise
-[8](#proposed-structure-for-cuculus-india-in-github-enterprise)](#proposed-structure-for-cuculus-india-in-github-enterprise)
-
-[4.1 The hierarchy (how it fits together)
-[8](#the-hierarchy-how-it-fits-together)](#the-hierarchy-how-it-fits-together)
-
-[4.2 Organization strategy options (choose and standardize)
-[8](#organization-strategy-options-choose-and-standardize)](#organization-strategy-options-choose-and-standardize)
-
-[Option A --- "Org per Project/Customer" (your current plan)
-[8](#option-a-org-per-projectcustomer-your-current-plan)](#option-a-org-per-projectcustomer-your-current-plan)
-
-[Option B --- "Few Orgs + Many Repos" (alternative, not mandatory)
-[9](#option-b-few-orgs-many-repos-alternative-not-mandatory)](#option-b-few-orgs-many-repos-alternative-not-mandatory)
-
-[5) Repository types we will maintain
-[10](#repository-types-we-will-maintain)](#repository-types-we-will-maintain)
-
-[5.1 Product/service code repositories
-[10](#productservice-code-repositories)](#productservice-code-repositories)
-
-[5.2 Customer deployment configuration repositories
-[10](#customer-deployment-configuration-repositories)](#customer-deployment-configuration-repositories)
-
-[5.3 Kubernetes platform repos (GitOps style)
-[10](#kubernetes-platform-repos-gitops-style)](#kubernetes-platform-repos-gitops-style)
-
-[5.4 CI/CD pipeline repos (if separated)
-[10](#cicd-pipeline-repos-if-separated)](#cicd-pipeline-repos-if-separated)
-
-[5.5 Documentation repositories (technical writers)
-[11](#documentation-repositories-technical-writers)](#documentation-repositories-technical-writers)
-
-[6) Standard working model (how changes flow)
-[11](#standard-working-model-how-changes-flow)](#standard-working-model-how-changes-flow)
-
-[6.1 What "version control" means
-[11](#what-version-control-means)](#what-version-control-means)
-
-[6.2 Standard change workflow (recommended)
-[11](#standard-change-workflow-recommended)](#standard-change-workflow-recommended)
-
-[7) Governance policies (what we will enforce)
-[12](#governance-policies-what-we-will-enforce)](#governance-policies-what-we-will-enforce)
-
-[7.1 Repository visibility
-[12](#repository-visibility)](#repository-visibility)
-
-[7.2 Branch protection (quality & stability)
-[12](#branch-protection-quality-stability)](#branch-protection-quality-stability)
-
-[7.3 CODEOWNERS (ownership clarity)
-[12](#codeowners-ownership-clarity)](#codeowners-ownership-clarity)
-
-[7.4 Access control using roles
-[12](#access-control-using-roles)](#access-control-using-roles)
-
-[7.5 Auditability [12](#auditability)](#auditability)
-
-[8) CI/CD and Kubernetes deployments (management explanation)
-[13](#cicd-and-kubernetes-deployments-management-explanation)](#cicd-and-kubernetes-deployments-management-explanation)
-
-[8.1 What CI/CD is [13](#what-cicd-is)](#what-cicd-is)
-
-[8.2 GitHub Actions (automation engine)
-[13](#github-actions-automation-engine)](#github-actions-automation-engine)
-
-[8.3 Runners: GitHub-hosted vs self-hosted
-[13](#runners-github-hosted-vs-self-hosted)](#runners-github-hosted-vs-self-hosted)
-
-[8.4 Environments (Dev/UAT/Prod controls)
-[13](#environments-devuatprod-controls)](#environments-devuatprod-controls)
-
-[9) Customer configuration storage rules (DGVCL, PVVNL, etc.)
-[14](#customer-configuration-storage-rules-dgvcl-pvvnl-etc.)](#customer-configuration-storage-rules-dgvcl-pvvnl-etc.)
-
-[9.1 Separation principle
-[14](#separation-principle)](#separation-principle)
-
-[9.2 What can be stored vs what must not be stored
-[14](#what-can-be-stored-vs-what-must-not-be-stored)](#what-can-be-stored-vs-what-must-not-be-stored)
-
-[10) Documentation versioning for technical writers
-[15](#documentation-versioning-for-technical-writers)](#documentation-versioning-for-technical-writers)
-
-[10.1 Why GitHub for documentation
-[15](#why-github-for-documentation)](#why-github-for-documentation)
-
-[10.2 Proposed doc workflow
-[15](#proposed-doc-workflow)](#proposed-doc-workflow)
-
-[11) Operating procedures (SOP) --- what I will manage
-[16](#operating-procedures-sop-what-i-will-manage)](#operating-procedures-sop-what-i-will-manage)
-
-[11.1 Creating a new Organization (per project/customer)
-[16](#creating-a-new-organization-per-projectcustomer)](#creating-a-new-organization-per-projectcustomer)
-
-[11.2 Standard teams inside each org
-[16](#standard-teams-inside-each-org)](#standard-teams-inside-each-org)
-
-[11.3 Onboarding/offboarding users
-[16](#onboardingoffboarding-users)](#onboardingoffboarding-users)
-
-[12) What management should expect (visibility & outcomes)
-[17](#what-management-should-expect-visibility-outcomes)](#what-management-should-expect-visibility-outcomes)
-
-[12.1 What improves immediately
-[17](#what-improves-immediately)](#what-improves-immediately)
-
-[12.2 What management can measure
-[17](#what-management-can-measure)](#what-management-can-measure)
-
-[13) Risks and mitigations
-[17](#risks-and-mitigations)](#risks-and-mitigations)
-
-[Risk 1 --- Over-segmentation (too many orgs)
-[17](#risk-1-over-segmentation-too-many-orgs)](#risk-1-over-segmentation-too-many-orgs)
-
-[Risk 2 --- Secrets leakage
-[17](#risk-2-secrets-leakage)](#risk-2-secrets-leakage)
-
-[Risk 3 --- Single point of failure (one admin)
-[18](#risk-3-single-point-of-failure-one-admin)](#risk-3-single-point-of-failure-one-admin)
-
-[Risk 4 --- Unsafe self-hosted runner posture
-[18](#risk-4-unsafe-self-hosted-runner-posture)](#risk-4-unsafe-self-hosted-runner-posture)
-
-[14) Glossary (quick reference)
-[18](#glossary-quick-reference)](#glossary-quick-reference)
-
-[Appendix A --- Suggested default permissions (baseline)
-[19](#appendix-a-suggested-default-permissions-baseline)](#appendix-a-suggested-default-permissions-baseline)
-
-[Inside each organization
-[19](#inside-each-organization)](#inside-each-organization)
-
-[Appendix B --- Proposed naming conventions (optional but recommended)
-[19](#appendix-b-proposed-naming-conventions-optional-but-recommended)](#appendix-b-proposed-naming-conventions-optional-but-recommended)
-
-[Organizations: [19](#organizations)](#organizations)
-
-[Repositories: [19](#repositories)](#repositories)
-
-[Branches: [19](#branches)](#branches)
+- [1) Why we purchased GitHub Enterprise](#1-why-we-purchased-github-enterprise)
+  - [Business purpose](#business-purpose)
+- [What GitHub Enterprise is (in simple terms)](#what-github-enterprise-is-in-simple-terms)
+- [2) Core concepts](#2-core-concepts)
+  - [2.1 Enterprise account (Cuculus India)](#21-enterprise-account-cuculus-india)
+  - [2.2 Organizations (project/customer containers)](#22-organizations-projectcustomer-containers)
+  - [2.3 Teams (role-based access groups)](#23-teams-role-based-access-groups)
+  - [2.4 Repositories ("repos")](#24-repositories-repos)
+  - [2.5 Permissions and roles (how we control access)](#25-permissions-and-roles-how-we-control-access)
+- [3) Cuculus India initial license allocation (10 seats)](#3-cuculus-india-initial-license-allocation-10-seats)
+  - [3.1 Initial users (as proposed)](#31-initial-users-as-proposed)
+    - [System Engineering (5)](#system-engineering-5)
+      - [Technical Writers (1)](#technical-writers-1)
+      - [Developers Team (4)](#developers-team-4)
+  - [3.2 Recommended admin coverage (risk control)](#32-recommended-admin-coverage-risk-control)
+- [4) Proposed structure for Cuculus India in GitHub Enterprise](#4-proposed-structure-for-cuculus-india-in-github-enterprise)
+  - [4.1 The hierarchy (how it fits together)](#41-the-hierarchy-how-it-fits-together)
+  - [4.2 Organization strategy options (choose and standardize)](#42-organization-strategy-options-choose-and-standardize)
+    - [Option A --- "Org per Project/Customer" (your current plan)](#option-a-----org-per-projectcustomer-your-current-plan)
+    - [Option B --- "Few Orgs + Many Repos" (alternative, not mandatory)](#option-b-----few-orgs--many-repos-alternative-not-mandatory)
+- [5) Repository types we will maintain](#5-repository-types-we-will-maintain)
+  - [5.1 Product/service code repositories](#51-productservice-code-repositories)
+  - [5.2 Customer deployment configuration repositories](#52-customer-deployment-configuration-repositories)
+  - [5.3 Kubernetes platform repos (GitOps style)](#53-kubernetes-platform-repos-gitops-style)
+  - [5.4 CI/CD pipeline repos (if separated)](#54-cicd-pipeline-repos-if-separated)
+  - [5.5 Documentation repositories (technical writers)](#55-documentation-repositories-technical-writers)
+- [6) Standard working model (how changes flow)](#6-standard-working-model-how-changes-flow)
+  - [6.1 What "version control" means](#61-what-version-control-means)
+  - [6.2 Standard change workflow (recommended)](#62-standard-change-workflow-recommended)
+- [7) Governance policies (what we will enforce)](#7-governance-policies-what-we-will-enforce)
+  - [7.1 Repository visibility](#71-repository-visibility)
+  - [7.2 Branch protection (quality \& stability)](#72-branch-protection-quality--stability)
+  - [7.3 CODEOWNERS (ownership clarity)](#73-codeowners-ownership-clarity)
+  - [7.4 Access control using roles](#74-access-control-using-roles)
+  - [7.5 Auditability](#75-auditability)
+- [8) CI/CD and Kubernetes deployments (management explanation)](#8-cicd-and-kubernetes-deployments-management-explanation)
+  - [8.1 What CI/CD is](#81-what-cicd-is)
+  - [8.2 GitHub Actions (automation engine)](#82-github-actions-automation-engine)
+  - [8.3 Runners: GitHub-hosted vs self-hosted](#83-runners-github-hosted-vs-self-hosted)
+  - [8.4 Environments (Dev/UAT/Prod controls)](#84-environments-devuatprod-controls)
+- [9) Customer configuration storage rules (DGVCL, PVVNL, etc.)](#9-customer-configuration-storage-rules-dgvcl-pvvnl-etc)
+  - [9.1 Separation principle](#91-separation-principle)
+  - [9.2 What can be stored vs what must not be stored](#92-what-can-be-stored-vs-what-must-not-be-stored)
+- [10) Documentation versioning for technical writers](#10-documentation-versioning-for-technical-writers)
+  - [10.1 Why GitHub for documentation](#101-why-github-for-documentation)
+  - [10.2 Proposed doc workflow](#102-proposed-doc-workflow)
+- [11) Operating procedures (SOP) --- what I will manage](#11-operating-procedures-sop-----what-i-will-manage)
+  - [11.1 Creating a new Organization (per project/customer)](#111-creating-a-new-organization-per-projectcustomer)
+  - [11.2 Standard teams inside each org](#112-standard-teams-inside-each-org)
+  - [11.3 Onboarding/offboarding users](#113-onboardingoffboarding-users)
+- [12) What management should expect (visibility \& outcomes)](#12-what-management-should-expect-visibility--outcomes)
+  - [12.1 What improves immediately](#121-what-improves-immediately)
+  - [12.2 What management can measure](#122-what-management-can-measure)
+- [13) Risks and mitigations](#13-risks-and-mitigations)
+  - [Risk 1 --- Over-segmentation (too many orgs)](#risk-1-----over-segmentation-too-many-orgs)
+  - [Risk 2 --- Secrets leakage](#risk-2-----secrets-leakage)
+  - [Risk 3 --- Single point of failure (one admin)](#risk-3-----single-point-of-failure-one-admin)
+  - [Risk 4 --- Unsafe self-hosted runner posture](#risk-4-----unsafe-self-hosted-runner-posture)
+- [14) Glossary (quick reference)](#14-glossary-quick-reference)
+- [Appendix A --- Suggested default permissions (baseline)](#appendix-a-----suggested-default-permissions-baseline)
+  - [Inside each organization](#inside-each-organization)
+- [Appendix B --- Proposed naming conventions (optional but recommended)](#appendix-b-----proposed-naming-conventions-optional-but-recommended)
+  - [Organizations:](#organizations)
+  - [Repositories:](#repositories)
+  - [Branches:](#branches)
 
 # 1) Why we purchased GitHub Enterprise
 
