@@ -1,354 +1,254 @@
 ```markdown
-# Cuculus India – GitHub Enterprise Governance & Structure
+# Cuculus India – GitHub Enterprise Governance
 
 **Owner:** Avnish Singh  
-**Scope:** Enterprise-level GitHub structure, organization model, repository strategy, access governance, and CI/CD management  
-**Audience:** Management, Engineering, DevOps, Technical Writers  
-**Status:** Initial Version (v1.0)
+**Scope:** Enterprise structure, organization model, repositories, access control, CI/CD governance  
+**Status:** v1.0  
 
 ---
 
 # 1. Purpose
 
-This repository documents how Cuculus India uses **GitHub Enterprise** to:
+GitHub Enterprise is the centralized platform for managing:
 
-- Manage product source code
-- Store customer-specific deployment configuration
-- Operate Kubernetes-based delivery models
-- Control CI/CD pipelines
-- Maintain technical documentation with version control
-- Enforce governance, security, and auditability
+- Product source code
+- Customer-specific deployment configuration
+- Kubernetes (GitOps) repositories
+- CI/CD automation
+- Technical documentation versioning
+- Change tracking and audit compliance
 
-This document serves as the **authoritative internal reference** for GitHub structure and management decisions.
+All engineering and deployment work must be governed through this structure.
 
 ---
 
-# 2. GitHub Enterprise Structure
+# 2. Enterprise Structure
 
-GitHub Enterprise is organized in three layers:
+GitHub is organized in three levels:
 
 ```
 
-Enterprise (Cuculus India)
+Cuculus India (Enterprise Account)
 │
-├── Organizations (per customer or program)
+├── Organizations
 │     ├── Teams
 │     └── Repositories
 
 ```
 
-## 2.1 Enterprise Account
-The top-level administrative boundary.
-- Centralized governance
-- License management
-- Policy enforcement
-- Security controls
+- **Enterprise Account** → Company-level governance and license management  
+- **Organization** → Project, customer, or program boundary  
+- **Repository** → Version-controlled unit (code, config, docs, pipelines)
 
 ---
 
-# 3. Organization Strategy
+# 3. Organization Model
 
-## Guiding Principle
+## 3.1 Core Product Organization
 
-> One organization per customer or major program.  
-> One shared organization for product source code.
+### `cuculus-products`
 
-This ensures:
-- Strong access isolation
-- Clear audit boundaries
-- No accidental cross-customer visibility
-- Scalable expansion
+Contains all reusable product code:
 
----
+- reporting-service  
+- prepayment-service  
+- jms-repush  
+- hes-connector  
+- shared-libraries  
+- ci-templates  
 
-# 4. Current Approved Organizations
-
-## 4.1 `cuculus-products`
-
-**Purpose:**  
-All core product source code and shared components.
-
-**Contains:**
-- reporting-service
-- prepayment-service
-- jms-repush
-- hes-connector
-- shared-libraries
-- ci-templates
-
-**Access:**  
-Developers + System Engineering
+This organization stores only product source code and shared components.
 
 ---
 
-## 4.2 `cuculus-customer-pvvnl`
+## 3.2 Customer Organizations
 
-**Purpose:**  
-PVVNL-specific deployment configuration and GitOps.
+One organization per customer to ensure isolation.
 
-**Contains:**
-- pvvnl-deployment-config
-- pvvnl-gitops
-- environment overlays
-- runbooks
-
----
-
-## 4.3 `cuculus-customer-dgvcl`
-
-**Purpose:**  
-DGVCL deployment and configuration.
-
-**Contains:**
-- dgvcl-deployment-config
-- dgvcl-gitops
-- pipeline definitions
-
----
-
-## 4.4 `cuculus-customer-bypl`
-
-**Purpose:**  
-BYPL Kubernetes-based deployment management.
-
-**Contains:**
-- bypl-gitops
-- bypl-config
-- release documentation
-
----
-
-## 4.5 `cuculus-program-ped-satnam`
-
-**Purpose:**  
-Program-level Kubernetes and deployment management.
-
-**Contains:**
-- ped-satnam-gitops
-- platform configuration
-- CD workflows
-- deployment documentation
-
----
-
-# 5. Repository Categories
-
-Repositories fall into the following types:
-
-## 5.1 Product Code Repositories
-Application source code.
-- Backend services
-- Connectors
-- Workers
-- APIs
-
-## 5.2 Customer Configuration Repositories
-- Kubernetes manifests
-- Helm values
+### `cuculus-customer-pvvnl`
+- PVVNL deployment config
+- GitOps repositories
 - Environment overlays
-- Deployment instructions
+- Runbooks
 
-## 5.3 GitOps Repositories
-- Desired cluster state
-- Namespace definitions
-- Ingress/service definitions
+### `cuculus-customer-dgvcl`
+- DGVCL deployment config
+- GitOps repositories
+- Pipeline definitions
 
-## 5.4 CI/CD Repositories
-- Workflow templates
-- Shared automation scripts
-
-## 5.5 Documentation Repositories
-- Product documentation
-- Release notes
-- Deployment guides
-- Operational runbooks
+### `cuculus-customer-bypl`
+- BYPL Kubernetes deployment
+- GitOps config
+- Release documentation
 
 ---
 
-# 6. Access Governance
+## 3.3 Program Organization
 
-## 6.1 Teams
+### `cuculus-program-ped-satnam`
 
-Each organization should include:
+Contains:
+- Kubernetes platform configuration
+- CD workflows
+- Platform-level GitOps repositories
+- Deployment documentation
+
+---
+
+# 4. Repository Categories
+
+Repositories will fall into these types:
+
+- **Product Code Repositories**
+- **Customer Deployment Configuration**
+- **GitOps Cluster State**
+- **CI/CD Workflow Definitions**
+- **Documentation Repositories**
+
+---
+
+# 5. Access Governance
+
+## 5.1 Teams per Organization
+
+Each organization should define:
 
 - `system-engineering`
 - `developers`
 - `technical-writers` (if required)
-- `release-devops` (optional but recommended)
+- `release-devops` (optional)
 
 ---
 
-## 6.2 Role Model
-
-| Role | Access Level | Responsibility |
-|------|--------------|---------------|
-| Developers | Write | Code changes via PR |
-| System Engineering | Maintain/Admin | Repo governance |
-| Technical Writers | Write (docs only) | Documentation updates |
-| Enterprise Owner | Admin | Org & policy control |
-
----
-
-## 6.3 Principles
+## 5.2 Role Principles
 
 - Least privilege access
-- No direct pushes to `main`
-- Mandatory pull request reviews
-- Enforced branch protection
-- 2FA mandatory for all users
+- No direct pushes to protected branches
+- Pull Request review mandatory
+- Branch protection enabled
+- Two-factor authentication required
 
 ---
 
-# 7. Standard Development Workflow
+# 6. Development Workflow
 
-1. Create Issue
-2. Create Feature Branch
-3. Commit Changes
-4. Open Pull Request
-5. Code Review
-6. CI Validation
-7. Merge to Main
-8. CD Deployment
+1. Create Issue  
+2. Create Feature Branch  
+3. Commit Changes  
+4. Open Pull Request  
+5. Review + CI Validation  
+6. Merge to Main  
+7. Automated Deployment  
 
-No direct commits to protected branches.
-
----
-
-# 8. CI/CD & Kubernetes Deployment Model
-
-## 8.1 CI (Continuous Integration)
-- Automated build & testing
-- Runs on every Pull Request
-
-## 8.2 CD (Continuous Deployment)
-- Automated deployment via GitHub Actions
-- Dev/UAT/Prod separation
-- Approval gates for production
-
-## 8.3 Runners
-
-Two possible models:
-
-- GitHub-hosted runners
-- Self-hosted runners (for internal/VPN/customer deployments)
-
-Self-hosted runners must:
-- Be secured
-- Be isolated per environment when required
-- Not expose secrets
+All production changes must go through Pull Request approval.
 
 ---
 
-# 9. Security Policies
+# 7. CI/CD & Deployment Model
 
-## 9.1 Secrets Management
+## Continuous Integration (CI)
+- Automated build and tests on every Pull Request
 
-The following must NEVER be stored in repositories:
+## Continuous Deployment (CD)
+- Automated deployment to Dev/UAT/Prod
+- Production requires approval gate
+
+## Runners
+- GitHub-hosted runners (default)
+- Self-hosted runners for customer/VPN environments
+
+Self-hosted runners must be secured and isolated appropriately.
+
+---
+
+# 8. Security Policies
+
+## 8.1 Secrets
+
+The following must NOT be stored in repositories:
+
 - Passwords
 - API keys
 - Certificates
 - Private keys
 - Tokens
 
-Secrets must be stored in:
-- GitHub encrypted secrets
-- External secret manager (preferred)
+Use encrypted secrets or an external secret management system.
 
 ---
 
-## 9.2 Branch Protection
+## 8.2 Branch Protection
 
-For all production repositories:
+For critical repositories:
+
 - Require Pull Request before merge
-- Require at least 1 review
+- Require at least one reviewer
 - Require CI checks to pass
 - Restrict force pushes
 
 ---
 
-## 9.3 Auditability
-
-All changes are:
-- Traceable
-- Time-stamped
-- Linked to user identity
-- Recoverable
-
----
-
-# 10. License Allocation (Initial 10 Seats)
+# 9. License Allocation (Initial 10 Seats)
 
 ### System Engineering
-- Kukkadotti Leelaja
-- Chandan Haldar
-- Avnish Singh
-- Kalyan Panathula
-- Muthuprakash
+- Kukkadotti Leelaja  
+- Chandan Haldar  
+- Avnish Singh  
+- Kalyan Panathula  
+- Muthuprakash  
 
 ### Technical Writer
-- Nilesh Gunjal
+- Nilesh Gunjal  
 
 ### Developers
-- Indranil Sarkar
-- Emran Khan
-- Probal
-- Teja
+- Indranil Sarkar  
+- Emran Khan  
+- Probal  
+- Teja  
 
-At least two Enterprise Owners should be defined to avoid operational dependency on a single administrator.
+At least two Enterprise Owners should be designated.
 
 ---
 
-# 11. Naming Conventions
+# 10. Naming Standards
 
 ## Organizations
 - `cuculus-products`
 - `cuculus-customer-<name>`
 - `cuculus-program-<name>`
 
-## Repositories
-- `<service-name>`
-- `<customer>-deployment-config`
-- `<program>-gitops`
-- `<product>-docs`
-
-## Branches
+## Branch Naming
 - `feature/<ticket>-description`
 - `bugfix/<ticket>-description`
 - `release/<version>`
 
 ---
 
-# 12. Change Management
+# 11. Governance Ownership
 
-Any modification to:
-- Organization structure
-- Access model
-- Security policy
-- Deployment architecture
+Enterprise Administrator: **Avnish Singh**
 
-Must be documented via Pull Request in this repository.
-
----
-
-# 13. Future Expansion
-
-When adding:
-- New customers → Create new customer organization
-- New products → Add to `cuculus-products`
-- New programs → Create program organization
-
-This structure is designed to scale beyond the initial 10 licenses.
-
----
-
-# 14. Governance Ownership
-
-**Enterprise Administrator:** Avnish Singh  
-Responsible for:
+Responsibilities:
 - Organization creation
-- Access approvals
+- Access management
 - Policy enforcement
 - CI/CD governance
 - Security oversight
 
 ---
+
+# 12. Scalability Model
+
+When adding:
+
+- New customer → Create new customer organization  
+- New product → Add repository in `cuculus-products`  
+- New program → Create program organization  
+
+This structure ensures:
+
+- Customer isolation  
+- Controlled deployment pipelines  
+- Audit-ready change management  
+- Secure and scalable growth  
+```
