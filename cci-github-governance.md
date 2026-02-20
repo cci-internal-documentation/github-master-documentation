@@ -17,8 +17,8 @@ technical documentation versioning.\
 - [3) Cuculus India initial license allocation (10 seats)](#3-cuculus-india-initial-license-allocation-10-seats)
   - [3.1 Initial users (as proposed)](#31-initial-users-as-proposed)
     - [System Engineering (5)](#system-engineering-5)
-      - [Technical Writers (1)](#technical-writers-1)
-      - [Developers Team (4)](#developers-team-4)
+    - [Technical Writers (1)](#technical-writers-1)
+    - [Developers Team (4)](#developers-team-4)
   - [3.2 Recommended admin coverage (risk control)](#32-recommended-admin-coverage-risk-control)
 - [4) Proposed structure for Cuculus India in GitHub Enterprise](#4-proposed-structure-for-cuculus-india-in-github-enterprise)
   - [4.1 The hierarchy (how it fits together)](#41-the-hierarchy-how-it-fits-together)
@@ -78,23 +78,23 @@ technical documentation versioning.\
 GitHub Enterprise will be Cuculus India's **central system of record**
 for:
 
-1.  []{#_Toc222325993 .anchor}Product source code repositories\
+1.  Product source code repositories\
     Examples: reporting, prepayment, JMS queue repush, HES Connector,
     and similar product modules.
 
-2.  []{#_Toc222325994 .anchor}Customer environment configuration
+2.  Customer environment configuration
     repositories\
     Examples: DGVCL, PVVNL (and other customer deployments).\
     This includes Kubernetes manifests / Helm charts / deployment
     parameters **without embedding secrets** (see security section).
 
-3.  []{#_Toc222325995 .anchor}Kubernetes-based delivery programs + CD
+3.  Kubernetes-based delivery programs + CD
     pipelines\
     Examples: PED-Satnam, CCI-SAS (includes DVC & IPCL), BYPL.\
     Includes **deployment automation (CD)** and operational runbooks as
     code.
 
-4.  []{#_Toc222325996 .anchor}Technical documentation version control\
+4.  Technical documentation version control\
     Technical writers will store documentation in repos to ensure:
 
     - history of changes
@@ -206,11 +206,11 @@ We can ensure "least privilege": people only get the access they need.
 
 5.  Muthuprakash
 
-#### Technical Writers (1)
+### Technical Writers (1)
 
 1.  Nilesh Gunjal
 
-#### Developers Team (4)
+### Developers Team (4)
 
 1.  Indranil Sarkar
 
