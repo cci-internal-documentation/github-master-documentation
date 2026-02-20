@@ -28,8 +28,8 @@ All engineering and deployment activities must follow this structure.
     │     ├── Teams
     │     └── Repositories
 
--   **Enterprise** → Governance & license control\
--   **Organization** → Product, customer, or program boundary\
+-   **Enterprise** → Governance & license control
+-   **Organization** → Product, customer, or program boundary
 -   **Repository** → Code, configuration, or documentation unit
 
 ------------------------------------------------------------------------
@@ -38,17 +38,17 @@ All engineering and deployment activities must follow this structure.
 
 ### Core Products
 
-`cuculus-products`\
+`cuculus-products`
 Reusable product code and shared components.
 
 ### Customer Organizations
 
-`cuculus-customer-<name>`\
+`cuculus-customer-<name>`
 Customer-specific deployment config, GitOps, and release artifacts.
 
 ### Program Organizations
 
-`cuculus-program-<name>`\
+`cuculus-program-<name>`
 Platform-level configuration and workflows.
 
 ------------------------------------------------------------------------
