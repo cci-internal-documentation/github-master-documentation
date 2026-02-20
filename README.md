@@ -101,5 +101,4 @@ All production changes require PR approval.
 -   New product → Repository in `cuculus-products`
 -   New program → New program organization
 
-This ensures customer isolation, secure pipelines, and audit-ready
-change management.
+This ensures customer isolation, secure pipelines, and audit-ready change management.
